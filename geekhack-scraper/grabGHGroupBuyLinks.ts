@@ -18,9 +18,7 @@ export function getCleanedGroupBuyLinks(dom: JSDOM) {
   return cleanLinks;
 }
 
-export const GrabGHGroupBuyLinks = async (
-  gbUrl: string
-): Promise<GroupBuyPage[]> => {
+export const GrabGHGroupBuyLinks = async ( gbUrl: string ): Promise<GroupBuyPage[]> => {
   let pages: GroupBuyPage[] = [];
 
   try {

@@ -34,6 +34,7 @@
     "node-downloader-helper": "^1.0.19",
     "pg": "^8.7.1",
     "sequelize": "^6.8.0",
+    "sqlite3": "^5.0.2",
     "threads": "^1.7.0",
     "tiny-worker": "^2.3.0"
   },
