@@ -59,51 +59,50 @@ export function getFormattedTitle(dom: JSDOM): string | undefined {
 }
 
 export function getImageLinks(dom: JSDOM): (string | undefined)[] {
-  const allPosts: Array<HTMLDivElement> = Array.from(
-    dom.window.document.querySelectorAll<HTMLDivElement>(".post_wrapper")
-  );
-  const limitedPostLength = allPosts.length >= 3 ? 3 : allPosts.length;
-  const firstThreePosts = allPosts.slice(0, limitedPostLength);
-  //slice this into 3 instead and then map
-  const imgLinks = firstThreePosts.map(
-    (post: HTMLDivElement): (string | undefined)[] => {
-      let imageLinks: (string | undefined)[] = [];
-      const threadStarterCheck = post.querySelector(".threadstarter");
-      // is the post made by the threadstarter? get all images links then
-      if (threadStarterCheck !== null) {
-        // TODO: collect some URLs for testing this to make sure all wanted images come back.
-        const allImgElements = Array.from(
-          post.querySelectorAll<HTMLImageElement>(
-            ".post img.bbc_img:not(.resized), img:not(.resized)[src*='action=dlattach;topic=']"
-          )
-        );
+    const allPosts: Array<HTMLDivElement> = Array.from(
+        dom.window.document.querySelectorAll<HTMLDivElement>(".post_wrapper")
+    );
+    const limitedPostLength = allPosts.length >= 3 ? 3 : allPosts.length;
+    const firstThreePosts = allPosts.slice(0, limitedPostLength);
+    //slice this into 3 instead and then map
+    const imgLinks = firstThreePosts.map(
+        (post: HTMLDivElement): (string | undefined)[] => {
+            let imageLinks: (string | undefined)[] = [];
+            const threadStarterCheck = post.querySelector(".threadstarter");
+            // is the post made by the threadstarter? get all images links then
+            if (threadStarterCheck !== null) {
+                // TODO: collect some URLs for testing this to make sure all wanted images come back.
+                const allImgElements = Array.from(
+                    post.querySelectorAll<HTMLImageElement>(
+                        ".post img.bbc_img:not(.resized), img:not(.resized)[src*='action=dlattach;topic=']"
+                    )
+                );
 
-        imageLinks = allImgElements.map((img: HTMLImageElement) => {
-          if (img.src.includes("PHPSESSID")) {
-            // looks something like ?PHPSESSID= with a GUID and then &action
-            const firstIndex = img.src.indexOf("PHPSESSID");
-            const secondIndex = img.src.indexOf("&");
-            const subString = img.src.substring(firstIndex, secondIndex + 1);
+                imageLinks = allImgElements.map((img: HTMLImageElement) => {
+                    if (img.src.includes("PHPSESSID")) {
+                        // looks something like ?PHPSESSID= with a GUID and then &action
+                        const firstIndex = img.src.indexOf("PHPSESSID");
+                        const secondIndex = img.src.indexOf("&");
+                        const subString = img.src.substring(firstIndex, secondIndex + 1);
 
-            return img.src.replace(subString, "");
-          } else {
-            return img.src;
-          }
-        });
-      }
-      return imageLinks;
-    }
-  );
-  // remove array of arrays, and remove empty strings
-  const flattenedImgLinkArray = imgLinks.flat().filter((link) => {
-    return link;
-  });
-  // remove duplicates
-  return [...new Set(flattenedImgLinkArray)];
+                        return img.src.replace(subString, "");
+                    } else {
+                        return img.src;
+                    }
+                });
+            }
+            return imageLinks;
+        }
+    );
+    // remove array of arrays, and remove empty strings
+    const flattenedImgLinkArray = imgLinks.flat().filter((link) => {
+        return link;
+    });
+    // remove duplicates
+    return [...new Set(flattenedImgLinkArray)];
 }
 
 export default function threadscrape(page: GroupBuyPage): PageInfo {
-    console.log(page.BodyDom);
     const imageLinks = getImageLinks(page.BodyDom);
     const urlTopicID = parseInt(page.PageLink.split("=")[1].split(".")[0], 10);
 
@@ -118,12 +117,9 @@ export default function threadscrape(page: GroupBuyPage): PageInfo {
         author: getAuthor(page.BodyDom),
     };
 
-    const images = imageLinks.map((image: string | undefined, index): Image => ({
-            thread_id: urlTopicID,
-            url: image,
-            sort_order: index,
-        })
-    );
+    console.log('Thread...', thread)
+
+    const images = imageLinks.map((image: string | undefined, index): Image => ({ thread_id: urlTopicID, url: image, sort_order: index, }));
 
     const pageInfo: PageInfo = { thread: thread, image: images };
     return pageInfo;

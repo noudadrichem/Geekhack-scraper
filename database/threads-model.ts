@@ -3,47 +3,48 @@ import db from "./initdb";
 //https://sequelize.org/master/manual/typescript.html#usage
 
 interface ThreadsInstance extends Model {
-  id: number;
-  website: string;
-  title: string;
-  start: Date;
-  scraped: Date;
-  updated: Date;
-  topic: number;
-  author: string;
+    id: number;
+    website: string;
+    title: string;
+    start: Date;
+    scraped: Date;
+    updated: Date;
+    topic: number;
+    author: string;
 }
+
 const ThreadsModel = db.define<ThreadsInstance>(
-  "threads",
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      primaryKey: true,
+    "threads",
+    {
+        id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            primaryKey: true,
+        },
+        website: {
+            type: DataTypes.INTEGER.UNSIGNED,
+        },
+        title: {
+            type: DataTypes.STRING,
+        },
+        start: {
+            type: DataTypes.DATE,
+        },
+        scraped: {
+            type: DataTypes.DATE,
+        },
+        updated: {
+            type: DataTypes.DATE,
+        },
+        topic: {
+            type: DataTypes.INTEGER,
+        },
+        author: {
+            type: DataTypes.STRING,
+        },
     },
-    website: {
-      type: DataTypes.INTEGER.UNSIGNED,
-    },
-    title: {
-      type: DataTypes.STRING,
-    },
-    start: {
-      type: DataTypes.DATE,
-    },
-    scraped: {
-      type: DataTypes.DATE,
-    },
-    updated: {
-      type: DataTypes.DATE,
-    },
-    topic: {
-      type: DataTypes.INTEGER,
-    },
-    author: {
-      type: DataTypes.STRING,
-    },
-  },
-  {
-    timestamps: false,
-  }
+    {
+        timestamps: false,
+    }
 );
 
 export default ThreadsModel;

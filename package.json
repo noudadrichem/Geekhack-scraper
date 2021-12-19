@@ -34,11 +34,12 @@
     "jsdom": "^19.0.0",
     "node-downloader-helper": "^1.0.19",
     "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "piscina": "^3.2.0",
+    "sequelize": "^6.11.0",
     "sqlite3": "^5.0.2",
     "threads": "^1.7.0",
-    "tiny-worker": "^2.3.0",
-    "piscina": "^3.2.0",
-    "sequelize": "^6.11.0"
+    "tiny-worker": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

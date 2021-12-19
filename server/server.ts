@@ -8,7 +8,7 @@ app.post("/scan", async () => {
   try {
     await scan();
   } catch (error) {
-    console.error(error);
+    console.error('Server connect error...', error);
   }
 });
 

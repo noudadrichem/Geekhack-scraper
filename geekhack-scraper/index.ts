@@ -6,18 +6,25 @@ import { GroupBuyURL, InterestCheckURL } from "../utils/constants";
 import { PageInfo } from "../utils/types";
 import createFolders from "./createFolders";
 
-db.authenticate()
-  .then(() => console.log("Database connected..."))
-  .catch((err: Error) => console.log(`Database Error: ${err}`));
 
 (async (): Promise<void> => {
+    await db.authenticate()
+        .then(() => {
+            db.sync({ force: true })
+            console.log("Database connected...")
+        })
+        .catch((err: Error) => console.log(`Database Error: ${err.message}`));
 
-  const ghGBPages: GroupBuyPage[] = await GrabGHGroupBuyLinks(GroupBuyURL);
-//   const ghICPages: GroupBuyPage[] = await GrabGHGroupBuyLinks(InterestCheckURL);
+    try {
+        console.log('try')
+        const ghGBPages: GroupBuyPage[] = await GrabGHGroupBuyLinks(GroupBuyURL);
+        const ghGbPagesInfo: PageInfo[] = ghGBPages.map((page) => threadscrape(page));
 
-  const ghGbPagesInfo: PageInfo[] = ghGBPages.map((page) => threadscrape(page));
-//   console.log('ghGbPagesInfo...', JSON.stringify(ghGbPagesInfo, null, 4))
-  createFolders(ghGbPagesInfo);
-
-  const saveInfo = await SaveToDatabase(ghGbPagesInfo);
+        createFolders(ghGbPagesInfo);
+        const saveInfo = await SaveToDatabase(ghGbPagesInfo);
+        console.log('SAVE INFO...', saveInfo)
+    } catch (error) {
+        console.log('catch...', error)
+        throw error
+    }
 })();

@@ -50,7 +50,10 @@ npm install
 npm run scrape
 ```
 
+## Database
+`docker run --name locopost -p 5432:5432 -e POSTGRES_PASSWORD=test1234 -d postgres`
 
 ## License
+
 
 MIT
