@@ -10,7 +10,7 @@ import createFolders from "./createFolders";
 (async (): Promise<void> => {
     await db.authenticate()
         .then(() => {
-            db.sync({ force: true })
+            // db.sync({ force: true })
             console.log("Database connected...")
         })
         .catch((err: Error) => console.log(`Database Error: ${err.message}`));
@@ -19,6 +19,8 @@ import createFolders from "./createFolders";
         console.log('try')
         const ghGBPages: GroupBuyPage[] = await GrabGHGroupBuyLinks(GroupBuyURL);
         const ghGbPagesInfo: PageInfo[] = ghGBPages.map((page) => threadscrape(page));
+
+        console.log('ghGbPagesInfo...', ghGbPagesInfo)
 
         createFolders(ghGbPagesInfo);
         const saveInfo = await SaveToDatabase(ghGbPagesInfo);

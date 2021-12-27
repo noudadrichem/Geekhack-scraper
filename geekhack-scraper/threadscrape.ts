@@ -121,6 +121,9 @@ export default function threadscrape(page: GroupBuyPage): PageInfo {
 
     const images = imageLinks.map((image: string | undefined, index): Image => ({ thread_id: urlTopicID, url: image, sort_order: index, }));
 
-    const pageInfo: PageInfo = { thread: thread, image: images };
+    const pageInfo: PageInfo = {
+        thread,
+        image: images
+    };
     return pageInfo;
 };

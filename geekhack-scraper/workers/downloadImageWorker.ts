@@ -72,7 +72,7 @@ const downloadImageAndReturnFilename = (url: string, path: string, uniqueImageNu
                 resolve(downloadInfo.fileName);
             })
             .on("error", (err: Error) => {
-                console.error(err);
+                console.error('asdfasdf', err);
                 download.stop();
                 reject(null);
             });
@@ -82,16 +82,13 @@ const downloadImageAndReturnFilename = (url: string, path: string, uniqueImageNu
 
 export const downloadImage = async (imageToDowload: Image): Promise<Image | null> => {
     const { sort_order, url, thread_id } = imageToDowload;
-
     const path = `${Environment.imagePath}/${thread_id}`;
+
+    console.log(thread_id, 'url..', url)
 
     if (url) {
         try {
-            // geekhack images have a unique number for their images.
-            // the filename may be duplicate, but the attach number will be unique.
-            // ?action=dlattach;topic=123456.0;attach=123456;image
             const isGeekhackImage = new URL(url).searchParams.has("action");
-            // if it has attach= then get the number.
             const uniqueImageNumber = isGeekhackImage
                 ? url.split("attach=")[1].split(";")[0]
                 : "";
@@ -102,10 +99,11 @@ export const downloadImage = async (imageToDowload: Image): Promise<Image | null
                 uniqueImageNumber
             );
 
-            // console.log('filename...', filename)
+            
+            console.log('filename...', filename)
 
-            if (filename) {
-                const downloadedImage: Image | null = {
+            if (filename !== null) {
+                const downloadedImage= {
                     thread_id,
                     name: filename,
                     url,
@@ -113,7 +111,9 @@ export const downloadImage = async (imageToDowload: Image): Promise<Image | null
                 };
                 return downloadedImage;
             }
-        } catch (err) {
+            
+            return null
+        } catch (err: any) {
             console.error('Download image error...', path, err);
             return null;
         }
